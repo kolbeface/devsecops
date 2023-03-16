@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shepokes-2
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: shepokes-2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shepokes-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shepokes-2
+  template:
+    metadata:
+      labels:
+        app: shepokes-2
+    spec:
+      containers:
+      - name: shepokes-static-site
+        image: kfface/shepokes-static-site:latest
+        ports:
+        - containerPort: 8080
