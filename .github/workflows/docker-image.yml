@@ -30,6 +30,8 @@ jobs:
     needs: ci_jobs  
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
     - name: GitHub Action for DigitalOcean - doctl
       uses: digitalocean/action-doctl@v2.3.0
       with: 
@@ -37,7 +39,7 @@ jobs:
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
     - name: Apply Deployments
-      working-directory: /devsecops/k8s
+      working-directory: ./k8s
       run: |
         kubectl apply -f shepokes-depl1.yaml
         kubectl apply -f shepokes-depl2.yaml
