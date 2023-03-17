@@ -25,5 +25,5 @@ jobs:
       working-directory: ./k8s
       run: |
         doctl kubernetes cluster kubeconfig save ${{ secrets.K8S-CLUSTER_ID }}
-        kubctl apply -f shepokes-depl1.yaml
-        kubctl apply -f shepokes-depl2.yaml
+        kubectl apply -f shepokes-depl1.yaml
+        kubectl apply -f shepokes-depl2.yaml

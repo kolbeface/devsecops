@@ -15,3 +15,4 @@ basic concepts of least privilege -done
 data classification
 code dependencies and vulnerability remediation in the dependency chain
 soc2 type 1 and type 2
+
