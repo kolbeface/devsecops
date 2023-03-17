@@ -25,7 +25,7 @@ spec:
         app: shepokes
     spec:
       containers:
-      - name: shepokes-static-site
-        image: kfface/shepokes-static-site:latest
+      - name: shepokes-site
+        image: kfface/shepokes-site:latest
         ports:
         - containerPort: 8080
