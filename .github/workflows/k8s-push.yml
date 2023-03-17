@@ -1,0 +1,22 @@
+name: K8s Push CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Link to K8s Cluster
+      working-directory: ./k8s
+      run: |
+        doctl kubernetes cluster kubeconfig save ${{ secrets.K8S-CLUSTER_ID }}
+        kubctl apply -f shepokes-depl1.yaml
+        kubctl apply -f shepokes-depl2.yaml
