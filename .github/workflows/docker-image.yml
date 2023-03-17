@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image CI K8s CD
 
 on:
   push:
@@ -7,9 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  build:
-
+  ci_jobs:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,10 +18,28 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Build the Docker image
+    - name: Build and Push Docker Image
       working-directory: ./app
       run: |
         TAG=$(date +%s)
         IMAGE_NAME=kfface/shepokes-site
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
+
+  cd_jobs:
+    needs: ci_jobs  
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: GitHub Action for DigitalOcean - doctl
+      uses: digitalocean/action-doctl@v2.3.0
+      with: 
+        token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
+    - name: Apply Deployments
+      working-directory: ./k8s
+      run: |
+        kubectl apply -f shepokes-depl1.yaml
+        kubectl apply -f shepokes-depl2.yaml
