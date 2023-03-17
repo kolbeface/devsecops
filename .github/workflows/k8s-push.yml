@@ -21,9 +21,8 @@ jobs:
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
 
-    - name: Link to K8s Cluster
+    - name: Apply Deployments
       working-directory: ./k8s
       run: |
-        doctl kubernetes cluster kubeconfig save ${{ secrets.K8S-CLUSTER_ID }}
         kubectl apply -f shepokes-depl1.yaml
         kubectl apply -f shepokes-depl2.yaml
