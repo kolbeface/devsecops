@@ -14,6 +14,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+    - name: GitHub Action for DigitalOcean - doctl
+      uses: digitalocean/action-doctl@v2.3.0
+      with: 
+        token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save testing-cluster
+
     - name: Link to K8s Cluster
       working-directory: ./k8s
       run: |
