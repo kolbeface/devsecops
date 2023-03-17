@@ -9,7 +9,7 @@ on:
 jobs:
 
   build:
-    needs: Docker Image CI
+    needs: docker-image
     runs-on: ubuntu-latest
 
     steps:
