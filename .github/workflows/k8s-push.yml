@@ -1,0 +1,29 @@
+name: K8s Push CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: GitHub Action for DigitalOcean - doctl
+      uses: digitalocean/action-doctl@v2.3.0
+      with: 
+        token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save ${{ CLUSTER_ID }}
+
+    - name: Link to K8s Cluster
+      working-directory: ./k8s
+      run: |
+        doctl kubernetes cluster kubeconfig save ${{ secrets.K8S-CLUSTER_ID }}
+        kubctl apply -f shepokes-depl1.yaml
+        kubctl apply -f shepokes-depl2.yaml
