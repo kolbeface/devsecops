@@ -30,16 +30,16 @@ jobs:
           docker push $IMAGE_NAME:$TAG
   cd_jobs:
     needs: ci_jobs  
-      - name: GitHub Action for DigitalOcean - doctl
-        uses: digitalocean/action-doctl@v2.3.0
-        with: 
-          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
-      - name: Save DigitalOcean kubeconfig
-        run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
+    - name: GitHub Action for DigitalOcean - doctl
+      uses: digitalocean/action-doctl@v2.3.0
+      with: 
+        token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
 
-      - name: Apply Deployments
-        working-directory: ./k8s
-        run: |
-          kubectl apply -f shepokes-depl1.yaml
-          kubectl apply -f shepokes-depl2.yaml
+    - name: Apply Deployments
+      working-directory: ./k8s
+      run: |
+        kubectl apply -f shepokes-depl1.yaml
+        kubectl apply -f shepokes-depl2.yaml
 
