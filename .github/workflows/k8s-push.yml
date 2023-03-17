@@ -19,7 +19,7 @@ jobs:
       with: 
         token: ${{ secrets.DIGITALOCEAN_TOKEN }}
     - name: Save DigitalOcean kubeconfig
-      run: doctl kubernetes cluster kubeconfig save testing-cluster
+      run: doctl kubernetes cluster kubeconfig save ${{ CLUSTER_ID }}
 
     - name: Link to K8s Cluster
       working-directory: ./k8s
