@@ -8,11 +8,11 @@ metadata:
 spec:
   tls:
   - hosts:
-    - hw1.shepokes.com
+    - shepokes.com
     - hw2.shepokes.com
     secretName: hello-kubernetes-tls
   rules:
-  - host: "hw1.shepokes.com"
+  - host: "shepokes.com"
     http:
       paths:
       - pathType: Prefix
