@@ -15,7 +15,7 @@ kind: Deployment
 metadata:
   name: shepokes-2
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: shepokes-2
