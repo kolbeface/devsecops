@@ -10,8 +10,8 @@ jobs:
   ci_jobs:
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.step1.outputs.TAG }}
-      outpu2: ${{ steps.step1.outputs.IMAGE_NAME }}
+      output1: ${{ steps.Declare_Vars.outputs.TAG }}
+      outpu2: ${{ steps.Declare_Vars.outputs.IMAGE_NAME }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -20,13 +20,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Build and Push Docker Image
+    - name: Declare_Vars
       working-directory: ./app
-    - id: step1
       run: |
         export TAG=$(date +%s)
         export IMAGE_NAME=kfface/shepokes-site
-    - id: step2
+    - name: Build and Push Docker Image
       run: |
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
@@ -35,21 +34,21 @@ jobs:
     needs: ci_jobs  
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: GitHub Action for DigitalOcean - doctl
-      uses: digitalocean/action-doctl@v2.3.0
-      with: 
-        token: ${{ secrets.DIGITALOCEAN_TOKEN }}
-    - name: Save DigitalOcean kubeconfig
-      run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
-    - name: Apply Deployment 1
-      working-directory: ./k8s    
-      env:
+      - env:
           TAG: ${{ needs.ci_jobs.outputs.output1 }}
           IMAGE_NAME: ${{ needs.ci_jobs.outputs.output2 }}
-      run: |
-        kubectl apply -f shepokes-depl1.yaml
-    - name: Apply Deployment 2
-      run: |
-        kubectl apply -f shepokes-depl2.yaml
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: GitHub Action for DigitalOcean - doctl
+        uses: digitalocean/action-doctl@v2.3.0
+        with: 
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
+      - name: Apply Deployment 1
+        working-directory: ./k8s    
+        run: |
+          kubectl apply -f shepokes-depl1.yaml
+      - name: Apply Deployment 2
+        run: |
+          kubectl apply -f shepokes-depl2.yaml
