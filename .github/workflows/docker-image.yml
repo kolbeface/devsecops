@@ -37,6 +37,7 @@ jobs:
       - env:
           TAG: ${{ needs.ci_jobs.outputs.output1 }}
           IMAGE_NAME: ${{ needs.ci_jobs.outputs.output2 }}
+        run: echo "$TAG $IMAGE_NAME"
       - name: Checkout code
         uses: actions/checkout@v3
       - name: GitHub Action for DigitalOcean - doctl
