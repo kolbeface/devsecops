@@ -9,7 +9,9 @@ on:
 jobs:
   ci_jobs:
     runs-on: ubuntu-latest
-
+    outputs:
+      TAG: ${{ steps.step1.outputs.TAG }}
+      IMAGE_NAME: ${{ steps.step1.outputs.IMAGE_NAME }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -20,16 +22,14 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and Push Docker Image
       working-directory: ./app
+    - id: step1
       run: |
         export TAG=$(date +%s)
         export IMAGE_NAME=kfface/shepokes-site
-        echo $TAG
+    - id: step2
+      run: |
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
-      
-      env:
-        TAG: $TAG
-        IMAGE_NAME: $IMAGE_NAME
 
   cd_jobs:
     needs: ci_jobs  
@@ -44,11 +44,16 @@ jobs:
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
     - name: Apply Deployment 1
-      working-directory: ./k8s
+      working-directory: ./k8s    
+      env:
+          TAG: ${{ needs.ci_jobs.outputs.output1 }}
+          IMAGE_NAME: ${{ needs.ci_jobs.outputs.output2 }}
       run: |
-        echo ${{ env.TAG }}
         kubectl apply -f shepokes-depl1.yaml
     - name: Apply Deployment 2
       working-directory: ./k8s
+      env:
+        TAG: ${{ needs.ci_jobs.outputs.TAG }}
+        IMAGE_NAME: ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
       run: |
         kubectl apply -f shepokes-depl2.yaml
