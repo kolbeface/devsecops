@@ -21,8 +21,8 @@ jobs:
     - name: Build and Push Docker Image
       working-directory: ./app
       run: |
-        export TAG=$(date +%s)
-        export IMAGE_NAME=kfface/shepokes-site
+        TAG=$(date +%s)
+        IMAGE_NAME=kfface/shepokes-site
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
         docker build . --file Dockerfile --tag ${{ env.IMAGE_NAME }}:${{ env.TAG }}
