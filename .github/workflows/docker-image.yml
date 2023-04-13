@@ -25,8 +25,8 @@ jobs:
         IMAGE_NAME=kfface/shepokes-site
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
-        docker build . --file Dockerfile --tag ${{ env.IMAGE_NAME }}:${{ env.TAG }}
-        docker push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
+        docker build . --file Dockerfile --tag ${{ IMAGE_NAME }}:${{ TAG }}
+        docker push ${{ IMAGE_NAME }}:${{ TAG }}
 
   cd_jobs:
     needs: ci_jobs  
