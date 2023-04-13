@@ -23,8 +23,8 @@ jobs:
     - name: Declare_Vars
       working-directory: ./app
       run: |
-        export TAG=$(date +%s)
-        export IMAGE_NAME=kfface/shepokes-site
+        TAG=$(date +%s)
+        IMAGE_NAME=kfface/shepokes-site
     - name: Build and Push Docker Image
       working-directory: ./app
       run: |
