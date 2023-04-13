@@ -23,6 +23,7 @@ jobs:
       run: |
         export TAG=$(date +%s)
         export IMAGE_NAME=kfface/shepokes-site
+        echo $TAG
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
       
