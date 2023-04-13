@@ -25,9 +25,6 @@ jobs:
       run: |
         TAG=$(date +%s)
         IMAGE_NAME=kfface/shepokes-site
-    - name: Build and Push Docker Image
-      working-directory: ./app
-      run: |
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
 
