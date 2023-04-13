@@ -10,8 +10,8 @@ jobs:
   ci_jobs:
     runs-on: ubuntu-latest
     outputs:
-      TAG: ${{ steps.step1.outputs.TAG }}
-      IMAGE_NAME: ${{ steps.step1.outputs.IMAGE_NAME }}
+      output1: ${{ steps.step1.outputs.TAG }}
+      outpu2: ${{ steps.step1.outputs.IMAGE_NAME }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -46,14 +46,10 @@ jobs:
     - name: Apply Deployment 1
       working-directory: ./k8s    
       env:
-          TAG: ${{ needs.ci_jobs.outputs.TAG }}
-          IMAGE_NAME: ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
+          TAG: ${{ needs.ci_jobs.outputs.output1 }}
+          IMAGE_NAME: ${{ needs.ci_jobs.outputs.output2 }}
       run: |
         kubectl apply -f shepokes-depl1.yaml
     - name: Apply Deployment 2
-      working-directory: ./k8s
-      env:
-        TAG: ${{ needs.ci_jobs.outputs.TAG }}
-        IMAGE_NAME: ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
       run: |
         kubectl apply -f shepokes-depl2.yaml
