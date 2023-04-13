@@ -27,8 +27,8 @@ jobs:
       working-directory: ./app
       run: |
         
-        docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
-        docker push $IMAGE_NAME:$TAG
+        docker build . --file Dockerfile --tag ${{ IMAGE_NAME }}:${{ TAG }}
+        docker push ${{ IMAGE_NAME }} :${{ TAG }}
 
   cd_jobs:
     needs: ci_jobs  
@@ -42,8 +42,11 @@ jobs:
         token: ${{ secrets.DIGITALOCEAN_TOKEN }}
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
-    - name: Apply Deployments
+    - name: Apply Deployment 1
       working-directory: ./k8s
       run: |
         kubectl apply -f shepokes-depl1.yaml
+    - name: Apply Deployment 2
+      working-directory: ./k8s
+      run: |
         kubectl apply -f shepokes-depl2.yaml
