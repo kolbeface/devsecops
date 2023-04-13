@@ -28,7 +28,7 @@ jobs:
       run: |
         
         docker build . --file Dockerfile --tag ${{ env.IMAGE_NAME }}:${{ env.TAG }}
-        docker push ${{ env.IMAGE_NAME }} :${{ env.TAG }}
+        docker push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
   cd_jobs:
     needs: ci_jobs  
