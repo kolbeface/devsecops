@@ -45,6 +45,7 @@ jobs:
     - name: Apply Deployment 1
       working-directory: ./k8s
       run: |
+        echo $TAG
         kubectl apply -f shepokes-depl1.yaml
     - name: Apply Deployment 2
       working-directory: ./k8s
