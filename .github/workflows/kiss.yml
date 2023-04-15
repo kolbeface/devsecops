@@ -23,6 +23,8 @@ jobs:
     needs: ci_jobs
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
     - name: retrieve output
       run: |
         echo ${{ needs.ci_jobs.outputs.myoutput }}
