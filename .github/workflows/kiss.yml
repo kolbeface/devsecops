@@ -33,4 +33,4 @@ jobs:
     - name: test dir
       working-directory: ./k8s 
       run: |
-        echo $TAG
+        echo ${{ needs.ci_jobs.outputs.myoutput }}
