@@ -24,10 +24,11 @@ jobs:
     - name: Declare_Vars
       working-directory: ./app
       run: |
-        echo "myoutput='hello world'" >> $GITHUB_OUTPUT
+        echo "myoutput='hello world'" >> $GITHUB_ENV
         TAG=$(date +%s)
         IMAGE_NAME=kfface/shepokes-site
-        echo $TAG
+        echo "TAG=$TAG" >> $GITHUB_ENV
+        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
 
@@ -45,9 +46,9 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
     - name: Apply Deployment 1 & 2
       env:
-        TAG: ${{ needs.ci_jobs.outputs.output1 }}
-        IMAGE_NAME: ${{ needs.ci_jobs.outputs.output2 }}
-        myoutput: ${{ needs.ci_jobs.outputs.myoutput }}
+        TAG: ${{ env.TAG }}
+        IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        myoutput: ${{ env.myoutput }}
       working-directory: ./k8s    
       run: |
         echo $myoutput
