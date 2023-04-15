@@ -26,10 +26,6 @@ jobs:
       run: |
         TAG=$(date +%s)
         IMAGE_NAME=kfface/shepokes-site
-        echo $TAG
-        echo "TAG=$TAG" >> $GITHUB_OUTPUT
-        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
-        echo ${{ needs.ci_jobs.outputs.TAG }}
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
   cd_jobs:
@@ -51,8 +47,5 @@ jobs:
     - name: Apply Deployment 1 & 2
       working-directory: ./k8s    
       run: |
-        echo hellokolbe
-        echo $myoutput
-        echo $TAG
         kubectl apply -f shepokes-depl1.yaml
         kubectl apply -f shepokes-depl2.yaml
