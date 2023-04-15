@@ -12,6 +12,7 @@ jobs:
     outputs:
       output1: ${{ steps.Declare_Vars.outputs.TAG }}
       output2: ${{ steps.Declare_Vars.outputs.IMAGE_NAME }}
+      output3: ${{ steps.Declare_Vars.outputs.myoutput }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -23,6 +24,7 @@ jobs:
     - name: Declare_Vars
       working-directory: ./app
       run: |
+        echo "myoutput='hello world'" >> $GITHUB_OUTPUT
         TAG=$(date +%s)
         IMAGE_NAME=kfface/shepokes-site
         echo $TAG
@@ -45,8 +47,10 @@ jobs:
       env:
         TAG: ${{ needs.ci_jobs.outputs.output1 }}
         IMAGE_NAME: ${{ needs.ci_jobs.outputs.output2 }}
+        myoutput: ${{ needs.ci_jobs.outputs.myoutput }}
       working-directory: ./k8s    
       run: |
+        echo $myoutput
         echo $TAG
         kubectl apply -f shepokes-depl1.yaml
         kubectl apply -f shepokes-depl2.yaml        
