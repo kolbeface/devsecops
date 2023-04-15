@@ -50,6 +50,7 @@ jobs:
         myoutput: ${{ needs.ci_jobs.outputs.output3 }}
       working-directory: ./k8s    
       run: |
+        echo hellokolbe
         echo $myoutput
         echo $TAG
         kubectl apply -f shepokes-depl1.yaml
