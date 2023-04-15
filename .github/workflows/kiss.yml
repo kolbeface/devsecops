@@ -1,0 +1,26 @@
+name: Test var pass
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  job1:
+    outputs:
+      myoutput: ${{ steps.step1.outputs.myoutput }}
+    
+    steps:
+    - name: set output
+      id: step1
+      run: |
+        echo "myoutput='hello world'" >> $GITHUB_OUTPUT
+
+  job2:
+    needs: job1
+
+    steps:
+    - name: retrieve output
+      run: |
+        echo ${{ needs.job1.outputs.myoutput }}
