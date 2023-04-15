@@ -26,6 +26,8 @@ jobs:
       run: |
         TAG=$(date +%s)
         IMAGE_NAME=kfface/shepokes-site
+        echo "TAG=$TAG" >> $GITHUB_OUTPUT
+        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
   cd_jobs:
