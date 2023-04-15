@@ -26,3 +26,7 @@ jobs:
     - name: retrieve output
       run: |
         echo ${{ needs.ci_jobs.outputs.myoutput }}
+    - name: test dir
+      working-directory: ./k8s 
+      run: |
+        echo ${{ needs.ci_jobs.outputs.myoutput }}
