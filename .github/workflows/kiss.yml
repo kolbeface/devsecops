@@ -7,22 +7,22 @@ on:
     branches: [ "main" ]
 
 jobs:
-  job1:
+  ci_jobs:
     runs-on: ubuntu-latest
     outputs:
-      myoutput: ${{ steps.step1.outputs.myoutput }}
+      myoutput: ${{ steps.declare_var.outputs.myoutput }}
     
     steps:
     - name: set output
-      id: step1
+      id: declare_var
       run: |
         echo "myoutput='hello world'" >> $GITHUB_OUTPUT
 
-  job2:
+  cd_jobs:
     runs-on: ubuntu-latest
-    needs: job1
+    needs: ci_jobs
 
     steps:
     - name: retrieve output
       run: |
-        echo ${{ needs.job1.outputs.myoutput }}
+        echo ${{ needs.ci_jobs.outputs.myoutput }}
