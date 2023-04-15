@@ -16,7 +16,9 @@ jobs:
     - name: set output
       id: declare_var
       run: |
-        echo "myoutput='hello world'" >> $GITHUB_OUTPUT
+        TAG=15
+        echo $TAG
+        echo "myoutput=$TAG >> $GITHUB_OUTPUT
 
   cd_jobs:
     runs-on: ubuntu-latest
