@@ -52,5 +52,6 @@ jobs:
         IMAGE_NAME: ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
       working-directory: ./k8s    
       run: |
+        echo $TAG
         kubectl apply -f shepokes-depl1.yaml
         kubectl apply -f shepokes-depl2.yaml
