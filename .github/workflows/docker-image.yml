@@ -58,7 +58,7 @@ jobs:
         export TAG=$TAG
         echo "TAG=$TAG" >> $GITHUB_ENV
         echo $TAG
-        kubectl apply -f shepokes-depl1.yaml
+        envsubst < shepokes-depl1.yaml | kubectl apply -f -
         kubectl apply -f shepokes-depl2.yaml
     - name: Debug
       run: |
