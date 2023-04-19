@@ -24,10 +24,11 @@ jobs:
       id: declare_vars
       working-directory: ./app
       run: |
-        export TAG=$(date +%s)
-        export IMAGE_NAME="kfface/shepokes-site"
-        echo "TAG=$TAG" >> $GITHUB_ENV
-        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+        TAG=$(date +%s)
+        IMAGE_NAME="kfface/shepokes-site"
+        echo "TAG=$TAG" >> $GITHUB_OUTPUT
+        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
+        echo $IMAGE_NAME
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
   cd_jobs:
@@ -44,7 +45,7 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
     - name: retrieve output
       run: |
-        echo ${{ env.TAG }}
+        echo ${{ needs.ci_jobs.outputs.TAG }}
         echo ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
     - name: Apply Deployment 1 & 2
       env:
@@ -54,5 +55,7 @@ jobs:
       run: |
         echo $TAG
         echo $IMAGE_NAME
+        export TAG
+        export $TAG
         kubectl apply -f shepokes-depl1.yaml
         kubectl apply -f shepokes-depl2.yaml
