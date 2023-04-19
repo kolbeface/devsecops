@@ -48,19 +48,10 @@ jobs:
         echo ${{ needs.ci_jobs.outputs.TAG }}
         echo ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
     - name: Apply Deployment 1 & 2
-      env:
-        TAG: ${{ needs.ci_jobs.outputs.TAG }}
-        IMAGE_NAME: ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
       working-directory: ./k8s    
       run: |
-        kubectl get pods
-        echo $IMAGE_NAME
         export TAG=$TAG
-        echo "TAG=$TAG" >> $GITHUB_ENV
-        echo $TAG
+        export IMAGE_NAME=$IMAGE_NAME
         envsubst < shepokes-depl1.yaml | kubectl apply -f -
-        kubectl apply -f shepokes-depl2.yaml
-    - name: Debug
-      run: |
-        echo "TAG: $TAG"
+        envsubst < shepokes-depl2.yaml | kubectl apply -f -
         
