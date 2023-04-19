@@ -60,3 +60,7 @@ jobs:
         echo $TAG
         kubectl apply -f shepokes-depl1.yaml
         kubectl apply -f shepokes-depl2.yaml
+    - name: Debug
+      run: |
+        echo "TAG: $TAG"
+        
