@@ -47,6 +47,9 @@ jobs:
         echo ${{ needs.ci_jobs.outputs.TAG }}
         echo ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
     - name: Apply Deployment 1 & 2
+      env:
+        TAG: ${{ needs.ci_jobs.outputs.TAG }}
+        IMAGE_NAME: ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
       working-directory: ./k8s    
       run: |
         kubectl apply -f shepokes-depl1.yaml
