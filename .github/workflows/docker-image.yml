@@ -55,6 +55,7 @@ jobs:
       run: |
         export TAG=$TAG
         export IMAGE_NAME=$IMAGE_NAME
+        echo $IMAGE_NAME
         envsubst < shepokes-depl1.yaml | kubectl apply -f -
         envsubst < shepokes-depl2.yaml | kubectl apply -f -
         
