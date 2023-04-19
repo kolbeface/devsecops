@@ -5,14 +5,13 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  
-env:
-  TAG: $(date +%s)
-  IMAGE_NAME: kfface/shepokes-site
 
 jobs:
   ci_jobs:
     runs-on: ubuntu-latest
+    outputs:
+      TAG: ${{ steps.declare_vars.outputs.TAG }}
+      IMAGE_NAME: ${{ steps.declare_vars.outputs.IMAGE_NAME }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -25,6 +24,10 @@ jobs:
       id: declare_vars
       working-directory: ./app
       run: |
+        TAG=$(date +%s)
+        IMAGE_NAME=kfface/shepokes-site
+        echo "TAG=$TAG" >> $GITHUB_OUTPUT
+        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
   cd_jobs:
@@ -41,8 +44,8 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
     - name: retrieve output
       run: |
-        echo $TAG
-        echo $IMAGE_NAME
+        echo ${{ needs.ci_jobs.outputs.TAG }}
+        echo ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
     - name: Apply Deployment 1 & 2
       working-directory: ./k8s    
       run: |
