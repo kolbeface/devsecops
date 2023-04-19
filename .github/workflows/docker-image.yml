@@ -53,7 +53,7 @@ jobs:
         IMAGE_NAME: ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
       working-directory: ./k8s    
       run: |
-        
+        kubectl get pods
         echo $IMAGE_NAME
         export TAG=$TAG
         echo "TAG=$TAG" >> $GITHUB_ENV
