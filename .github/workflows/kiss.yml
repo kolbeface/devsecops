@@ -28,9 +28,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     - name: retrieve output
-      run: |
-        echo ${{ needs.ci_jobs.outputs.myoutput }}
+      env: 
+        TAG: ${{ needs.ci_jobs.outputs.myoutput }}
     - name: test dir
       working-directory: ./k8s 
       run: |
-        echo ${{ needs.ci_jobs.outputs.myoutput }}
+        echo TAG
