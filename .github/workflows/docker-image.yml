@@ -55,7 +55,6 @@ jobs:
       run: |
         echo $TAG
         echo $IMAGE_NAME
-        export TAG
         export $TAG
         kubectl apply -f shepokes-depl1.yaml
         kubectl apply -f shepokes-depl2.yaml
