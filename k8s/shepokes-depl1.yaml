@@ -26,6 +26,6 @@ spec:
     spec:
       containers:
       - name: shepokes-site
-        image: kfface/shepokes-site:${{ workflow.TAG }}
+        image: kfface/shepokes-site:${{ env.TAG }}
         ports:
         - containerPort: 8080
