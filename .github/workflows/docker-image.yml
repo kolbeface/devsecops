@@ -44,7 +44,7 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
     - name: retrieve output
       run: |
-        echo ${{ needs.ci_jobs.outputs.TAG }}
+        echo ${{ env.TAG }}
         echo ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
     - name: Apply Deployment 1 & 2
       env:
