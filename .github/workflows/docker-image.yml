@@ -53,5 +53,6 @@ jobs:
       working-directory: ./k8s    
       run: |
         echo $TAG
+        echo $IMAGE_NAME
         kubectl apply -f shepokes-depl1.yaml
         kubectl apply -f shepokes-depl2.yaml
