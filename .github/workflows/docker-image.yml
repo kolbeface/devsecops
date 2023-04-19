@@ -24,11 +24,10 @@ jobs:
       id: declare_vars
       working-directory: ./app
       run: |
-        TAG=$(date +%s)
-        IMAGE_NAME="kfface/shepokes-site"
-        echo "TAG=$TAG" >> $GITHUB_OUTPUT
-        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
-        echo $IMAGE_NAME
+        export TAG=$(date +%s)
+        export IMAGE_NAME="kfface/shepokes-site"
+        echo "TAG=$TAG" >> $GITHUB_ENV
+        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
         docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
         docker push $IMAGE_NAME:$TAG
   cd_jobs:
