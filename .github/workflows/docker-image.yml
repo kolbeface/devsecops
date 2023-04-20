@@ -3,8 +3,7 @@ name: Docker Image CI K8s CD
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+
 
 jobs:
   ci_jobs:
