@@ -3,15 +3,13 @@ name: Docker Image CI K8s CD
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+
 
 jobs:
   ci_jobs:
     runs-on: ubuntu-latest
     outputs:
       TAG: ${{ steps.declare_vars.outputs.TAG }}
-      IMAGE_NAME: ${{ steps.declare_vars.outputs.IMAGE_NAME }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -25,12 +23,9 @@ jobs:
       working-directory: ./app
       run: |
         TAG=$(date +%s)
-        IMAGE_NAME="kfface/shepokes-site"
         echo "TAG=$TAG" >> $GITHUB_OUTPUT
-        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
-        echo $IMAGE_NAME
-        docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
-        docker push $IMAGE_NAME:$TAG
+        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_IMAGE_NAME }}:$TAG
+        docker push ${{ secrets.DOCKER_IMAGE_NAME }}:$TAG
   cd_jobs:
     needs: ci_jobs  
     runs-on: ubuntu-latest
@@ -46,16 +41,13 @@ jobs:
     - name: retrieve output
       run: |
         echo ${{ needs.ci_jobs.outputs.TAG }}
-        echo ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
     - name: Apply Deployment 1 & 2
       env:
         TAG: ${{ needs.ci_jobs.outputs.TAG }}
-        IMAGE_NAME: ${{ needs.ci_jobs.outputs.IMAGE_NAME }}
       working-directory: ./k8s    
       run: |
         export TAG=$TAG
-        export IMAGE_NAME=$IMAGE_NAME
-        echo $IMAGE_NAME
+        export IMAGENAME=${{ secrets.DOCKER_IMAGE_NAME }}
         envsubst < shepokes-depl1.yaml | kubectl apply -f -
         envsubst < shepokes-depl2.yaml | kubectl apply -f -
         
